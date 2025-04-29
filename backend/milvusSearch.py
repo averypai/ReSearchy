@@ -3,10 +3,10 @@ from pymilvus.model.hybrid import BGEM3EmbeddingFunction
 
 from util import extract_highlight_spans
 
-MILVUS_URI = "https://in03-82e942b4e67c56a.serverless.gcp-us-west1.cloud.zilliz.com"
-MILVUS_PORT = "19530"
-MILVUS_USER = "db_82e942b4e67c56a"
-MILVUS_PASSWORD = "Li4252002"
+MILVUS_URI = ""
+MILVUS_PORT = ""
+MILVUS_USER = ""
+MILVUS_PASSWORD = ""
 
 
 connections.connect(
