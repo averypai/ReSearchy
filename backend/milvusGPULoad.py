@@ -16,7 +16,7 @@ MILVUS_PORT = ""
 MILVUS_USER = ""
 MILVUS_PASSWORD = ""
 
-COLLECTION_NAME = "hybrid"
+COLLECTION_NAME = "hybrid_search"
 
 
 SAVE_DIR = "./saved_embeddings"
@@ -122,7 +122,7 @@ def insert_batch(collection, batch_data, dense_list, sparse_list, offset):
         field_name="sparse_vector",
         index_params={
             "index_type": "SPARSE_INVERTED_INDEX",
-            "metric_type": "IP"
+            "metric_type": "BM25"
         }
     )
 
@@ -131,7 +131,7 @@ def insert_batch(collection, batch_data, dense_list, sparse_list, offset):
         field_name="dense_vector",
         index_params={
             "index_type": "AUTOINDEX",
-            "metric_type": "IP"
+            "metric_type": "COSINE"
         }
     )
 

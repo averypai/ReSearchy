@@ -1,4 +1,4 @@
-from pymilvus import connections, Collection, AnnSearchRequest, WeightedRanker
+from pymilvus import connections, Collection, AnnSearchRequest, RRFRanker
 from pymilvus.model.hybrid import BGEM3EmbeddingFunction
 
 from util import extract_highlight_spans
@@ -17,7 +17,7 @@ connections.connect(
 )
 
 
-collection_name = "hybrid"
+collection_name = "hybrid_search"
 collection = Collection(collection_name)
 collection.load()
 
@@ -26,7 +26,7 @@ ef = BGEM3EmbeddingFunction(device="cuda", use_fp16=False)
 # ef = BGEM3EmbeddingFunction(device="cpu", use_fp16=False)
 
 def dense_search(col, query_dense_embedding, limit=10):
-    search_params = {"metric_type": "IP", "params": {}}
+    search_params = {"metric_type": "COSINE", "params": {}}
     res = col.search(
         [query_dense_embedding],
         anns_field="dense_vector",
@@ -37,7 +37,7 @@ def dense_search(col, query_dense_embedding, limit=10):
     return res
 
 def sparse_search(col, query_sparse_embedding, limit=10):
-    search_params = {"metric_type": "IP", "params": {}}
+    search_params = {"metric_type": "BM25", "params": {}}
     res = col.search(
         [query_sparse_embedding],
         anns_field="sparse_vector",
@@ -55,17 +55,17 @@ def hybrid_search(
     dense_weight=1.0,
     limit=10,
 ):
-    dense_search_params = {"metric_type": "IP", "params": {}}
+    dense_search_params = {"metric_type": "COSINE", "params": {}}
     dense_req = AnnSearchRequest(
         [query_dense_embedding], "dense_vector", dense_search_params, limit=limit
     )
 
-    sparse_search_params = {"metric_type": "IP", "params": {}}
+    sparse_search_params = {"metric_type": "BM25", "params": {}}
     sparse_req = AnnSearchRequest(
         [query_sparse_embedding], "sparse_vector", sparse_search_params, limit=limit
     )
 
-    rerank = WeightedRanker(sparse_weight, dense_weight)
+    rerank = RRFRanker(60)
 
     res = col.hybrid_search(
         [sparse_req, dense_req],
