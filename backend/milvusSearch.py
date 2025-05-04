@@ -37,7 +37,7 @@ def dense_search(col, query_dense_embedding, limit=10):
     return res
 
 def sparse_search(col, query_sparse_embedding, limit=10):
-    search_params = {"metric_type": "BM25", "params": {}}
+    search_params = {"metric_type": "IP", "params": {}}
     res = col.search(
         [query_sparse_embedding],
         anns_field="sparse_vector",
@@ -60,7 +60,7 @@ def hybrid_search(
         [query_dense_embedding], "dense_vector", dense_search_params, limit=limit
     )
 
-    sparse_search_params = {"metric_type": "BM25", "params": {}}
+    sparse_search_params = {"metric_type": "IP", "params": {}}
     sparse_req = AnnSearchRequest(
         [query_sparse_embedding], "sparse_vector", sparse_search_params, limit=limit
     )

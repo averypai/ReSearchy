@@ -31,9 +31,9 @@ connections.connect(
 
 device = "cuda" if (torch.cuda.is_available()) else "cpu"
 
-print(device)
-if device != "cuda":
-    exit()
+# print(device)
+# if device != "cuda":
+#     exit()
 
 
 ef = BGEM3EmbeddingFunction(device=device, use_fp16=(device=="cuda"))
@@ -122,7 +122,7 @@ def insert_batch(collection, batch_data, dense_list, sparse_list, offset):
         field_name="sparse_vector",
         index_params={
             "index_type": "SPARSE_INVERTED_INDEX",
-            "metric_type": "BM25"
+            "metric_type": "IP"
         }
     )
 
@@ -140,7 +140,7 @@ def insert_batch(collection, batch_data, dense_list, sparse_list, offset):
 
 
 def main():
-    data_path = "../data/data_ai_cl.jsonl"
+    data_path = "./data/data_ai_cl.jsonl"
     data = load_jsonl(data_path)
 
     if os.path.exists(os.path.join(SAVE_DIR, "dense.npy")) and os.path.exists(os.path.join(SAVE_DIR, "sparse.npz")):
