@@ -1,4 +1,4 @@
-from pymilvus import connections, Collection, AnnSearchRequest, RRFRanker
+from pymilvus import connections, Collection, AnnSearchRequest, RRFRanker, WeightedRanker
 from pymilvus.model.hybrid import BGEM3EmbeddingFunction
 
 from util import extract_highlight_spans
@@ -51,8 +51,8 @@ def hybrid_search(
     col,
     query_dense_embedding,
     query_sparse_embedding,
-    sparse_weight=1.0,
-    dense_weight=1.0,
+    sparse_weight=0.5,
+    dense_weight=0.5,
     limit=10,
 ):
     dense_search_params = {"metric_type": "COSINE", "params": {}}
@@ -65,7 +65,8 @@ def hybrid_search(
         [query_sparse_embedding], "sparse_vector", sparse_search_params, limit=limit
     )
 
-    rerank = RRFRanker(60)
+    # rerank = RRFRanker(60)
+    rerank = WeightedRanker(sparse_weight, dense_weight)
 
     res = col.hybrid_search(
         [sparse_req, dense_req],

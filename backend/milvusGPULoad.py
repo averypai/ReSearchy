@@ -31,9 +31,9 @@ connections.connect(
 
 device = "cuda" if (torch.cuda.is_available()) else "cpu"
 
-# print(device)
-# if device != "cuda":
-#     exit()
+print(device)
+if device != "cuda":
+    exit()
 
 
 ef = BGEM3EmbeddingFunction(device=device, use_fp16=(device=="cuda"))
