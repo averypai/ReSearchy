@@ -22,8 +22,8 @@ collection = Collection(collection_name)
 collection.load()
 
 
-ef = BGEM3EmbeddingFunction(device="cuda", use_fp16=False)
-# ef = BGEM3EmbeddingFunction(device="cpu", use_fp16=False)
+# ef = BGEM3EmbeddingFunction(device="cuda", use_fp16=False)
+ef = BGEM3EmbeddingFunction(device="cpu", use_fp16=False)
 
 def dense_search(col, query_dense_embedding, limit=10):
     search_params = {"metric_type": "COSINE", "params": {}}
@@ -51,8 +51,8 @@ def hybrid_search(
     col,
     query_dense_embedding,
     query_sparse_embedding,
-    sparse_weight=0.5,
-    dense_weight=0.5,
+    sparse_weight=1.0,
+    dense_weight=1.0,
     limit=10,
 ):
     dense_search_params = {"metric_type": "COSINE", "params": {}}
@@ -66,7 +66,7 @@ def hybrid_search(
     )
 
     # rerank = RRFRanker(60)
-    rerank = WeightedRanker(sparse_weight, dense_weight)
+    rerank = WeightedRanker(0.5, 0.5)
 
     res = col.hybrid_search(
         [sparse_req, dense_req],
@@ -81,9 +81,9 @@ def display_hybrid_results_as_json(ef, query, collection, sparse_weight=0.7, den
 
     output = ef([query])
     dense_query = output["dense"][0]
-    sparse_query = output["sparse"][[0]]  
+    sparse_query = output["sparse"][[0]]
 
-   
+
 
     hits = hybrid_search(collection, dense_query, sparse_query, sparse_weight, dense_weight, limit)
 
@@ -115,12 +115,12 @@ def display_hybrid_results_as_json(ef, query, collection, sparse_weight=0.7, den
         print("=" * 60)
         print()
 
-    return results  
+    return results
 
 
 
 if __name__ == "__main__":
-    query = "Reliable collision avoidance under extreme situations remains a critical challenge for autonomous vehicles. While large language models (LLMs) offer promising reasoning capabilities, their application in safety-critical evasive maneuvers is limited by latency and robustness issues. Even so, LLMs stand out for their ability to weigh emotional, legal, and ethical factors, enabling socially responsible and context-aware collision avoidance. This paper proposes a scenario-aware collision avoidance (SACA) framework for extreme situations by integrating predictive scenario evaluation, data-driven reasoning, and scenario-preview-based deployment to improve collision avoidance decision-making. SACA consists of three key components. First, a predictive scenario analysis module utilizes obstacle reachability analysis and motion intention prediction to construct a comprehensive situational prompt. Second, an online reasoning module refines decision-making by leveraging prior collision avoidance knowledge and fine-tuning with scenario data. Third, an offline evaluation module assesses performance and stores scenarios in a memory bank. Additionally, A precomputed policy method improves deployability by previewing scenarios and retrieving or reasoning policies based on similarity and confidence levels. Real-vehicle tests show that, compared with baseline methods, SACA effectively reduces collision losses in extreme high-risk scenarios and lowers false triggering under complex conditions."
+    query = "I plan to develop a new information retrieval system that uses a graph structure to represent the semantic relationships between documents. This system will combine traditional vector space models with the latest graph neural network technology, aiming to improve the precision and recall of retrieval, especially for complex multi-hop queries."
 
     ### the query containing ID, URL, AUTHOR, SCORE .....
-    result = display_hybrid_results_as_json(ef, query, collection, sparse_weight=0.7, dense_weight=1.0, limit=5)
+    result = display_hybrid_results_as_json(ef, query, collection, sparse_weight=0.5, dense_weight=0.5, limit=10)
