@@ -39,7 +39,7 @@ With ReSearchy, the research process becomes more efficient, allowing academic r
 
 1.  Clone the repo
     ```sh
-    git clone [https://github.com/averypai/ReSearchy.git](https://github.com/averypai/ReSearchy.git)
+    git clone https://github.com/averypai/ReSearchy.git
     ```
 2.  Install backend dependencies
     ```sh
@@ -92,7 +92,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## 🙏 Acknowledgements
 
 * The arXiv team for their API and open-access dataset.
-* Professor Cheng Zhai and the CS510 course staff.
+* Professor Chengxiang Zhai and the CS510 course staff.
 
 ---
 **Project Link:** [https://github.com/averypai/ReSearchy](https://github.com/averypai/ReSearchy)
