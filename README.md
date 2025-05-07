@@ -33,7 +33,7 @@ With ReSearchy, the research process becomes more efficient, allowing academic r
 
 * Python 3.x
 * Node.js & npm/yarn (for frontend)
-* Access to pre-trained models and databases
+* Milvus and stored embeddings
 
 ### Installation
 
@@ -51,7 +51,7 @@ With ReSearchy, the research process becomes more efficient, allowing academic r
     cd ../frontend
     npm install
     ```
-4.  Set up environment variables
+4.  Set up environment variables for Milvus on the Cloud
 
 ### Running the Application
 
