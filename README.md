@@ -93,6 +93,3 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 * The arXiv team for their API and open-access dataset.
 * Professor Chengxiang Zhai and the CS510 course staff.
-
----
-**Project Link:** [https://github.com/averypai/ReSearchy](https://github.com/averypai/ReSearchy)
